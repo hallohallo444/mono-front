@@ -1,0 +1,20 @@
+{
+  "posts": [
+    { "id": "1", "title": "a title", "views": 100 },
+    { "id": "2", "title": "another title", "views": 200 }
+  ],
+  "comments": [
+    { "id": "1", "text": "a comment about post 1", "postId": "1" },
+    { "id": "2", "text": "another comment about post 1", "postId": "1" }
+  ],
+  "users": [
+    {"id": "1","name":"田中　太郎" },
+    {"id": "2","name":"佐藤　花子" },
+    {"id": "3","name":"鈴木　茂" },
+    {"id": "4","name":"高橋　勇" },
+    {"id": "5","name":"佐藤　和子" }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
