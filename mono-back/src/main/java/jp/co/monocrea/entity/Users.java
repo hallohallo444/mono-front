@@ -18,8 +18,9 @@ import jakarta.persistence.NamedQuery;
 @NamedQuery(name = "Users.countByRecords", query = "select count(*) from Users")
 @NamedQuery(name = "Users.updateNameById", query = "update Users u set u.name = :name where u.id = :id")
 @NamedQuery(name = "Users.deleteById", query = "delete from Users u where u.id = :id")
-
 public class Users extends PanacheEntity {
+
+    public String name;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

@@ -23,7 +23,7 @@ public class SearchUserResource {
     @GET
     @Path("/{limit}/{offset}")
     public List<Users> list(int limit,int offset) {
-        return PanacheEntityBase.findAll(Sort.by("id",Direction.Ascending))
+        return Users.findAll(Sort.by("id",Direction.Ascending))
          .page(Page.of(--offset, limit))
          .list();
     }
@@ -31,7 +31,7 @@ public class SearchUserResource {
     @GET
     @Path("/id/{id}")
     public Users get(Long id) {
-        return PanacheEntityBase.findById(id);
+        return Users.findById(id);
     }
 
     @GET

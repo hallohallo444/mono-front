@@ -86,6 +86,7 @@
             const result = await response.json();
             resultData = result;
             if (Array.isArray(resultData)) {
+                //alert(resultData.length);
                 if(resultData.length !== MAX_PAGE_LENGTH) {
                     nextDisabled = true;
                 } else {
