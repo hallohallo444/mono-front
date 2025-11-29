@@ -19,13 +19,18 @@
     async function regist() {
 
         if(username == "" || username == null){
-          alert("空データが入っています");
+          alert("入力がありません");
           return;
         }
         const url = "http://localhost:8080/search/create/" + username;
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, {
+            method: 'GET', // 必要に応じてPOSTなどに変更
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
 
             if (!response.ok) {
             throw new Error(`レスポンスステータス: ${response.status}`);

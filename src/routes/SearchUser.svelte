@@ -84,12 +84,14 @@
             }
 
             const result = await response.json();
-            resultData = result;
+            const resultNum = result.searchResultListsNum;
+            
+            resultData = result.userList;
+
             if (Array.isArray(resultData)) {
-                //alert(resultData.length);
                 if(resultData.length !== MAX_PAGE_LENGTH) {
                     nextDisabled = true;
-                } else {
+                } else if (pageNum * 10 < resultNum) {
                     nextDisabled = false;
                 }
             }

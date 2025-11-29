@@ -13,6 +13,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jp.co.monocrea.entity.Users;
+import jp.co.monocrea.entity.UsersInfo;
 import jp.co.monocrea.repository.*;
 
 @Path("/search")
@@ -20,12 +21,23 @@ import jp.co.monocrea.repository.*;
 @Consumes(MediaType.APPLICATION_JSON)
 public class SearchUserResource {
     
+    // @GET
+    // @Path("/{limit}/{offset}")
+    // public List<Users> list(int limit,int offset) {
+    //     return Users.findAll(Sort.by("id",Direction.Ascending))
+    //      .page(Page.of(--offset, limit))
+    //      .list();
+    // }
+    
     @GET
     @Path("/{limit}/{offset}")
-    public List<Users> list(int limit,int offset) {
-        return Users.findAll(Sort.by("id",Direction.Ascending))
+    public UsersInfo list(int limit,int offset) {
+        UsersInfo result = new UsersInfo();
+        result.searchResultListsNum = Users.findAll().count();
+        result.userList = Users.findAll(Sort.by("id",Direction.Ascending))
          .page(Page.of(--offset, limit))
          .list();
+         return result;
     }
 
     @GET

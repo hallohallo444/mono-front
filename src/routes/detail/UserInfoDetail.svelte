@@ -61,7 +61,6 @@
         } catch (error) {
             alert("削除処理が失敗しました。");
             console.log(error);
-            //console.error(error.message);
         }
             
     }
