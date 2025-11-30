@@ -33,6 +33,8 @@
     let prevDisabled = $state(true);
     let nextDisabled = $state(true);
     let nodataMsg = $state("");
+    let isAscending = $state(true);
+    let sortObj = $state("▲");
 
     /** ページネーション定義(start) */
     import { PaginationItem } from "flowbite-svelte";
@@ -40,10 +42,14 @@
         if (pageNum > 1) {
             pageNum--;
         }
+        sortObj = "▲";
+        isAscending = true;
         getData();
     };
     const next = () => {
         pageNum++;
+        sortObj = "▲";
+        isAscending = true;
         getData();
     };
     /** ページネーション定義(end) */
@@ -111,6 +117,23 @@
             //console.error(error.message);
         }
     }
+    /**
+     * ソート処理
+     */
+    async function sortData() {
+
+        if(isAscending){
+            isAscending = false;
+            sortObj = "▼";
+        } else {
+            isAscending = true;
+            sortObj = "▲";
+        }
+
+        resultData.sort((a, b) => {
+            return isAscending ? Number(a.id) - Number(b.id) : Number(b.id) - Number(a.id);
+        });
+    }
 
 </script>
 
@@ -118,7 +141,8 @@
     <table>
         <tbody>
             <tr>
-                <th class="zen-kaku-gothic-new-regular">ユーザID</th>
+                <th class="zen-kaku-gothic-new-regular">ユーザID
+                </th>
                 <th class="zen-kaku-gothic-new-regular">
                     <input bind:value={userid} />
                 </th>
@@ -150,7 +174,9 @@
 <table border="1" style="border-collapse: collapse">
     <thead>
         <tr>
-            <th class="zen-kaku-gothic-new-regular">ユーザーID</th>
+            <th class="zen-kaku-gothic-new-regular">ユーザーID
+                    <button onclick={sortData}>
+                    {sortObj}</button></th>
             <th colspan="2"style="width:300px;" class="zen-kaku-gothic-new-regular">ユーザー名</th>
         </tr>
     </thead>
