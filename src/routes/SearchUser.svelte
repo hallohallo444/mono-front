@@ -17,6 +17,10 @@
 
 <script lang="ts">
 
+    type User = {
+        id: number;
+        name: string;
+    };
 
     /**
 	 * フィールド定義
@@ -25,9 +29,10 @@
     let userid = $state();
     let pageNum = $state(1);
     let username = $state("");
-    let resultOnlyData = $state();
+    let resultOnlyData : User = $state({ id: 0, name: "" });
     let prevDisabled = $state(true);
     let nextDisabled = $state(true);
+    let nodataMsg = $state("");
 
     /** ページネーション定義(start) */
     import { PaginationItem } from "flowbite-svelte";
@@ -51,7 +56,6 @@
 
     async function getData() {
 
-        //const url = "http://localhost:8080/search?id=AAA&name=BBB";
         // urlの切り替え
         let urlStr = "";
         let idNum = userid === undefined ? 0 : Number(userid);
@@ -68,10 +72,8 @@
         if((idNum !== 0) && (username == null || username == "")){
             urlStr += "/id/" + userid;
         } else if((username !== null || username !== "") && (idNum == 0) ){
-            //alert(username);
             urlStr += "/" + username;
         }else if((username !== null || username !== "" )&& (idNum !== 0)){
-            //alert("/" + userid + "/" + username);
             urlStr += "/" + idNum + "/" + username;
         }
         const url = "http://localhost:8080/search" + urlStr + "/" + MAX_PAGE_LENGTH + "/" + offset;
@@ -85,7 +87,7 @@
 
             const result = await response.json();
             const resultNum = result.searchResultListsNum;
-            
+
             resultData = result.userList;
 
             if (Array.isArray(resultData)) {
@@ -94,6 +96,13 @@
                 } else if (pageNum * 10 < resultNum) {
                     nextDisabled = false;
                 }
+            }
+
+            if(resultNum == 0){
+                nodataMsg = "データが見つかりませんでした";
+                prevDisabled = true;
+            } else {
+                nodataMsg = "";
             }
             
         } catch (error) {
@@ -161,7 +170,7 @@
             </tr>
         {/each}
     {:else}
-        <tr>
+        <tr class="zen-kaku-gothic-new-regular">
             <td align="center">
                 { resultData.id }
             </td>
@@ -178,6 +187,7 @@
     {/if}
     </tbody>
 </table>
+<p>{nodataMsg}</p>
 
 <!-- ページネーション -->
 <br />

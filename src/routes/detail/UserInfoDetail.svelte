@@ -8,6 +8,7 @@
 
 <script lang="ts">
   export let data; // ← load() の return 値がここに渡される
+  let HOME_LINK = "http://localhost:5173";
 
   // 更新
   async function updateData(id: number, name: string) {
@@ -28,7 +29,7 @@
             throw new Error(`レスポンスステータス: ${response.status}`);
             }
             alert("更新処理が完了しました。");
-            const result = await response.json();
+            location.href = HOME_LINK;
 
         } catch (error) {
             alert("更新処理が失敗しました。");
@@ -56,7 +57,7 @@
             throw new Error(`レスポンスステータス: ${response.status}`);
             }
             alert("削除処理が完了しました。");
-            const result = await response.json();
+            location.href = HOME_LINK;
 
         } catch (error) {
             alert("削除処理が失敗しました。");

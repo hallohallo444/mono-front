@@ -1,8 +1,6 @@
 package jp.co.monocrea;
 
-import java.util.List;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
@@ -21,24 +19,17 @@ import jp.co.monocrea.repository.*;
 @Consumes(MediaType.APPLICATION_JSON)
 public class SearchUserResource {
     
-    // @GET
-    // @Path("/{limit}/{offset}")
-    // public List<Users> list(int limit,int offset) {
-    //     return Users.findAll(Sort.by("id",Direction.Ascending))
-    //      .page(Page.of(--offset, limit))
-    //      .list();
-    // }
-    
     @GET
     @Path("/{limit}/{offset}")
     public UsersInfo list(int limit,int offset) {
         UsersInfo result = new UsersInfo();
-        result.searchResultListsNum = Users.findAll().count();
         result.userList = Users.findAll(Sort.by("id",Direction.Ascending))
          .page(Page.of(--offset, limit))
          .list();
+        result.searchResultListsNum = Users.findAll().count();
          return result;
     }
+
 
     @GET
     @Path("/id/{id}")
@@ -47,15 +38,21 @@ public class SearchUserResource {
     }
 
     @GET
+    @Path("/id/{id}/{limit}/{offset}")
+    public UsersInfo get(Long id,int limit,int offset) {
+        return Users.findById(id, limit, offset);
+    }
+
+    @GET
     @Path("/{name}/{limit}/{offset}")
-    public List<Users> get(String name,int limit,int offset) {
+    public UsersInfo get(String name,int limit,int offset) {
         return Users.findByName(name, limit, offset);
     }
 
     @GET
     @Path("/{id}/{name}/{limit}/{offset}")
-    public List<Users> get(Long id,String name,int limit,int offset) {
-        return Users.findByIdName(id,name, limit, offset);
+    public UsersInfo get(Long id,String name,int limit,int offset) {
+        return Users.findByIdName(id, name, limit, offset);
     }
 
     @GET

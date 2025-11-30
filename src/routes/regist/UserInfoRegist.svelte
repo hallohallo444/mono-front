@@ -11,7 +11,10 @@
 <script>
 
 	let scoops = $state(1);
-  let username = $state("");
+    let isNotShowPopupMsg = false;
+    var result;
+    let username = $state("");
+    let HOME_LINK = "http://localhost:5173";
 
 	const formatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
 
@@ -36,13 +39,22 @@
             throw new Error(`レスポンスステータス: ${response.status}`);
             }
 
-            alert("登録が完了しました");
+            if (isNotShowPopupMsg) {
+                alert("登録が完了しました。");
+                return;
+            }
+            var warnings = ['登録が完了しました。登録を続行しますか？', '※「OK」押下後は、連続登録が可能ですが、手動で戻る必要があります'];
+            result = window.confirm(warnings.join('\n'));
 
-            //todo: レスポンスも必要（リターンコードとか）
+            if( result ) {
+                isNotShowPopupMsg = true;
+            }
+            else {
+                location.href = HOME_LINK;
+            }
 
         } catch (error) {
             console.log(error);
-            //console.error(error.message);
         }
     }
 

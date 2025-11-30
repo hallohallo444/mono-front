@@ -1,7 +1,6 @@
 package jp.co.monocrea.entity;
 
 
-import java.util.List;
 import java.util.Optional;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -13,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.NamedQuery;
 
 @Entity
+@NamedQuery(name = "Users.getById", query = "from Users where id = ?1 order by id asc")
 @NamedQuery(name = "Users.getByName", query = "from Users where name LIKE CONCAT('%', ?1, '%') order by id asc")
 @NamedQuery(name = "Users.getByIdName", query = "from Users where id = ?1 and name LIKE CONCAT('%', ?2, '%') order by id asc")
 @NamedQuery(name = "Users.countByRecords", query = "select count(*) from Users")
@@ -24,16 +24,40 @@ public class Users extends PanacheEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    public static List<Users> findByName(String name, int limit, int offset){
-        return find("#Users.getByName", name)
+    public static UsersInfo findById(Long id, int limit, int offset){
+        UsersInfo usersInfo = new UsersInfo();
+
+        usersInfo.userList = find("#Users.getById", id)
         .page(Page.of(offset - 1, limit))
         .list();
+
+        usersInfo.searchResultListsNum = find("#Users.getById", id).count();
+        
+        return usersInfo;
     }
 
-    public static List<Users> findByIdName(Long id,String name, int limit, int offset){
-        return find("#Users.getByIdName", id,name)
+    public static UsersInfo findByName(String name, int limit, int offset){
+        UsersInfo usersInfo = new UsersInfo();
+
+        usersInfo.userList = find("#Users.getByName", name)
         .page(Page.of(offset - 1, limit))
         .list();
+
+        usersInfo.searchResultListsNum = find("#Users.getByName", name).count();
+        
+        return usersInfo;
+    }
+
+    public static UsersInfo findByIdName(Long id,String name, int limit, int offset){
+        UsersInfo usersInfo = new UsersInfo();
+
+        usersInfo.userList = find("#Users.getByIdName", id,name)
+        .page(Page.of(offset - 1, limit))
+        .list();
+
+        usersInfo.searchResultListsNum = usersInfo.userList.size();
+        
+        return usersInfo;
     }
 
     /**
