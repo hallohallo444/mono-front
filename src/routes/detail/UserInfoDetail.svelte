@@ -72,6 +72,10 @@
 
 <p class="zen-kaku-gothic-new-regular" style="font-size:36px;">ユーザ詳細画面</p>
 
+<p style="text-align:right;">
+    <a href="/regist" class="button12">新規登録</a>
+</p>
+
 <div align="center">
     <table>
         <tbody>
